@@ -4,6 +4,7 @@ function calculate(){
     document.getElementById('submitButton').style.visibility = 'hidden';
 
     setValues('name1','p1','name2','p2','name3','p3','name4','p4');
+    setValues('score1','raw1');
     
     return;
 }
