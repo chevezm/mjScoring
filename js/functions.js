@@ -11,7 +11,7 @@ function calculate(){
 
 function reset(){
 
-    toggleVisibility('finalScore','resetButton',submitButton');
+    toggleVisibility('finalScore','resetButton','submitButton');
 
     resetValues('raw1','raw2','raw3','raw4','chip1','chip2','chip3','chip4');
     
