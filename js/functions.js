@@ -3,8 +3,8 @@ function calculate(){
     document.getElementById('resetButton').style.visibility = 'visible';
     document.getElementById('submitButton').style.visibility = 'hidden';
     
-    document.getElementById('name1').value = document.getElementById('p1').value;
-    document.getElementById('name2').value = document.getElementById('p2').value;
+    document.getElementById('name1').text = document.getElementById('p1').value;
+    
     document.getElementById('name3').value = document.getElementById('p3').value;
     document.getElementById('name4').value = document.getElementById('p4').value;
 
