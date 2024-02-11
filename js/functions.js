@@ -2,7 +2,7 @@ function calculate(){
     toggleVisibility('finalScore','resetButton','submitButton');
     setValues('name1','p1','name2','p2','name3','p3','name4','p4');
     setValues('score2','raw2');
-    score('score1');
+    score('raw'1, 'score1');
     return;
 }
 
@@ -29,7 +29,8 @@ function resetValues(...args){
   return;
 }
 
-function score(player){
-    document.getElementById(player).innerHTML = document.getElementById('oka').checked ? 1 : 0;
+function score(raw, player){
+    let oka = document.getElementById('oka').checked ? 1 : 0;
+    document.getElementById(player).innerHTML = document.getElementById(raw).value + oka * 20;
     return;
 }
