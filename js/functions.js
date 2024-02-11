@@ -29,5 +29,5 @@ function resetValues(...args){
 }
 
 function score(oka, uma, rate, chip, raw){
-    return Number(raw) + Number(oka) * 20);
+    return Number(raw) + Number(oka) * 20;
 }
