@@ -18,6 +18,10 @@ input[type='number'].numberChip{
     width: 100px;
 }
 
+#submitButton {
+    visibility: visible;
+}
+
 #finalScore, #resetButton {
     visibility: hidden;
 }
