@@ -2,7 +2,7 @@ function calculate(){
     toggleVisibility('finalScore','resetButton','submitButton');
     setValues('name1','p1','name2','p2','name3','p3','name4','p4');
     setValues('score2','raw2');
-    score('raw'1, 'score1');
+    score('raw1', 'score1');
     return;
 }
 
