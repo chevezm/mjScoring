@@ -4,8 +4,9 @@ function calculate(){
     document.getElementById('submitButton').style.visibility = 'hidden';
     
     document.getElementById('name1').innerHTML = document.getElementById('p1').value;
-    
-    document.getElementById('name3').value = document.getElementById('p3').value;
+    document.getElementById('name2').innerHTML = document.getElementById('p2').value;
+    document.getElementById('name3').innerHTML = document.getElementById('p3').value;
+    document.getElementById('name4').innerHTML = document.getElementById('p4').value;
 
     return;
 }
@@ -15,7 +16,8 @@ function reset(){
     document.getElementById('resetButton').style.visibility = 'hidden';
     document.getElementById('submitButton').style.visibility = 'visible';
 
-    resetValues('raw1','raw2','raw3','raw4','chip1','chip2','chip3','chip4');
+    resetValues('raw1','raw2','raw3','raw4',\
+                'chip1','chip2','chip3','chip4');
     
     return;
 }
