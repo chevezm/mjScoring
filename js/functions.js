@@ -18,8 +18,7 @@ function reset(){
     document.getElementById('resetButton').style.visibility = 'hidden';
     document.getElementById('submitButton').style.visibility = 'visible';
 
-    resetValues('raw1','raw2','raw3','raw4',\
-                'chip1','chip2','chip3','chip4');
+    resetValues('raw1','raw2','raw3','raw4','chip1','chip2','chip3','chip4');
     
     return;
 }
