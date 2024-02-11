@@ -31,6 +31,6 @@ function resetValues(...args){
 
 function score(raw, player){
     let oka = document.getElementById('oka').checked ? 1 : 0;
-    document.getElementById(player).innerHTML = document.getElementById(raw).value + oka * 20;
+    document.getElementById(player).innerHTML = Number(document.getElementById(raw).value) + oka * 20;
     return;
 }
