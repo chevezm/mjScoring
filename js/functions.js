@@ -28,6 +28,8 @@ function resetValues(...args){
   return;
 }
 
-function score(oka = "oka", uma = "uma", rate = "rate", chip = "chip", raw){
-    return '' + (Number(document.getElementById(raw).value) + Number(document.getElementById(oka).value) * 20);
+function score(raw){
+    let oka = document.getElementById('oka').checked ? 1 : 0;
+    let rawScore = document.getElementById(raw).value;
+    return '' + (oka * 20);
 }
