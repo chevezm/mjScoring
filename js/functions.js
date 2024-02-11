@@ -28,8 +28,7 @@ function resetValues(...args){
   return;
 }
 
-function score(raw){
+function score(){
     let oka = document.getElementById('oka').checked ? 1 : 0;
-    let rawScore = document.getElementById(raw).value;
     return oka;
 }
