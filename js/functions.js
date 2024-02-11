@@ -29,5 +29,5 @@ function resetValues(...args){
 }
 
 function score(oka = "oka", uma = "uma", rate = "rate", chip = "chip", raw){
-    return Number(document.getElementById(raw).value) + Number(document.getElementById(oka).value) * 20;
+    return '' + (Number(document.getElementById(raw).value) + Number(document.getElementById(oka).value) * 20);
 }
