@@ -2,14 +2,12 @@ function calculate(){
     document.getElementById('finalScore').style.visibility = 'visible';
     document.getElementById('resetButton').style.visibility = 'visible';
     document.getElementById('submitButton').style.visibility = 'hidden';
+
+    setValues('name1','p1','name2','p2');
     
-    document.getElementById('name1').innerHTML = document.getElementById('p1').value;
-    document.getElementById('name2').innerHTML = document.getElementById('p2').value;
-    document.getElementById('name3').innerHTML = document.getElementById('p3').value;
     document.getElementById('name4').innerHTML = document.getElementById('p4').value;
 
-    document.getElementById('score1').innerHTML = document.getElementById('raw1').value;
-
+    
     return;
 }
 
@@ -20,6 +18,11 @@ function reset(){
 
     resetValues('raw1','raw2','raw3','raw4','chip1','chip2','chip3','chip4');
     
+    return;
+}
+
+function setValues(...args){
+    for (let i=0; i < arguments.length; i +=2) document.getElementById(arguments[i]).innerHTML = document.getElementById(arguments[i+1]).value;
     return;
 }
 
