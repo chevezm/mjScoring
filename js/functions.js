@@ -1,6 +1,7 @@
 function calculate(){
     toggleVisibility('finalScore','resetButton','submitButton');
     setValues('name1','p1','name2','p2','name3','p3','name4','p4');
+    setValues('score1',score('raw1'));
     return;
 }
 
@@ -25,4 +26,8 @@ function setValues(...args){
 function resetValues(...args){
   for (let arg of args) document.getElementById(arg).value = document.getElementById(arg).defaultValue;
   return;
+}
+
+function score(oka, uma, rate, chip, raw){
+    return Number(raw) + Number(oka) * 20);
 }
