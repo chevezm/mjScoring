@@ -8,6 +8,8 @@ function calculate(){
     document.getElementById('name3').innerHTML = document.getElementById('p3').value;
     document.getElementById('name4').innerHTML = document.getElementById('p4').value;
 
+    document.getElementById('score1').innerHTML = document.getElementById('raw1').value;
+
     return;
 }
 
