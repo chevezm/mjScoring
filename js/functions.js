@@ -23,6 +23,6 @@ function setValues(...args){
 }
 
 function resetValues(...args){
-  for (let arg of args) document.getElementById(arg).value = '';
+  for (let arg of args) document.getElementById(arg).value = document.getElementById(arg).defaultValue;
   return;
 }
