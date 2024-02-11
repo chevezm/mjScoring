@@ -28,6 +28,6 @@ function resetValues(...args){
   return;
 }
 
-function score(oka, uma, rate, chip, raw){
+function score(oka = "oka", uma = "uma", rate = "rate", chip = "chip", raw){
     return Number(document.getElementById(raw).value) + Number(document.getElementById(oka).value) * 20;
 }
