@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <title>Scoring Calculator</title>
+  </head>
+  <body>
+
+    
+    <div class="container-fluid">
+
+      <div class="row justify-content-start">
+        <div class="col align-self-start">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+            <label class="form-check-label" for="flexSwitchCheckDefault">Oka (20K)</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-1 justify-content-start">
+        <div class="col-sm">
+          <label for="umaSelect">Uma</label>
+        </div>
+      </div>
+
+      <div class="row justify-content-start">
+        <div class="col-sm">
+          <select id="uma" class="form-select" aria-label="Uma">
+            <option selected>0</option>
+            <option value="10">10 / 5</option>
+            <option value="15">15 / 5</option>
+            <option value="20">20 / 10</option>
+            <option value="30">30 / 10</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="row mt-1 justify-content-start">
+        <div class="col-sm">
+          <label for="rateSelect">Rate</label>
+        </div>
+      </div>
+
+      <div class="row justify-content-start">
+        <div class="col-sm">
+          <select id="rate" class="form-select" aria-label="Rate">
+            <option value="0.3" selected>0.3</option>
+            <option value="0.5">0.5</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row mt-1 justify-content-start">
+        <div class="col-sm">
+          <label for="chipSelect">Chip</label>
+        </div>
+      </div>
+
+      <div class="row justify-content-start">
+        <div class="col-sm">
+          <select id="chip" class="form-select" aria-label="Chip">
+            <option value="0" selected>0</option>
+            <option value="0.5">0.5</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row mt-2 justify-content-start">
+        <div class="col">
+          <table class="table table-striped table-sm">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col align-self-start">Player</th>
+                <th scope="col align-self-start">Raw Score</th>
+                <th scope="col align-self-start">Chip</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"><input type="text" value="1" size="6" id="p1"></th>
+                <td><input class="rawScore" type="number" id="raw1"></td>
+                <td><input class="numberChip" type="number" step="1" id="chip1"></td>
+              </tr>
+              <tr>
+                <th scope="row"><input type="text" value="2" size="6" id="p2"></th>
+                <td><input class="rawScore" type="number" id="raw2"></td>
+                <td><input class="numberChip" type="number" step="1" id="chip2"></td>
+              </tr>
+              <tr>
+                <th scope="row"><input type="text" value="3" size="6" id="p3"></th>
+                <td><input class="rawScore" type="number" id="raw3"></td>
+                <td><input class="numberChip" type="number" step="1" id="chip3"></td>
+              </tr>
+              <tr>
+                <th scope="row"><input type="text" value="4" size="6" id="p4"></th>
+                <td><input class="rawScore" type="number" id="raw4"></td>
+                <td><input class="numberChip" type="number" step="1" id="chip4"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <button type="button" onclick="calculate()" class="btn btn-dark" id="submitButton">Submit</button>
+        </div>
+      </div>
+
+      <div class="row mt-2 justify-content-start">
+        <div class="col">
+          <table class="table table-striped table-sm" id="finalScore">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col align-self-start">Player</th>
+                <th scope="col align-self-start">Final Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"><input type="text" size="6" readonly id="name1"></th>
+                <td><input class="rawScore" type="number" readonly></td>
+              </tr>
+              <tr>
+                <th scope="row"><input type="text" size="6" readonly id="name2"></th>
+                <td><input class="rawScore" type="number" readonly></td>
+              </tr>
+              <tr>
+                <th scope="row"><input type="text" size="6" readonly id="name3"></th>
+                <td><input class="rawScore" type="number" readonly></td>
+              </tr>
+              <tr>
+                <th scope="row"><input type="text" size="6" readonly id="name4"></th>
+                <td><input class="rawScore" type="number" readonly></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <button type="button" onclick="reset()" class="btn btn-dark" id="resetButton">Reset</button>
+        </div>
+      </div>
+
+      
+    </div>
+ 
+   
+    <!-- Optional JavaScript -->
+    <script src="js/functions.js"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+  </body>
+</html>

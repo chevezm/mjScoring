@@ -1,0 +1,23 @@
+body{
+    font-family: arial;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type='number'].rawScore{
+    width: 100px;
+} 
+
+input[type='number'].numberChip{
+    width: 40px;
+} 
+
+.form-select {
+    width: 100px;
+}
+
+#finalScore, #resetButton {
+    visibility: hidden;
+}
