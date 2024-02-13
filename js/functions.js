@@ -11,12 +11,14 @@ function calculate(){
         toggleVisibility('finalScore','resetButton','submitButton');
         setValues('name1','p1','name2','p2','name3','p3','name4','p4');
         setScore(...getFinalScore());
-        $('#rawScoreTitle').css('color', 'white');
-        $('#chipTitle').css('color', 'white');      
+        
+        document.getElementById('rawScoreTitle').style.color = 'white';
+        document.getElementById('chipTitle').style.color = 'white';
+              
         return;
     }
-    $('#rawScoreTitle').css('color', checksumRaw() ? 'white' : 'crimson');
-    $('#chipTitle').css('color', checksumChip() ? 'white' : 'crimson');
+    document.getElementById('rawScoreTitle').style.color = checksumRaw() ? 'white' : 'crimson');
+    document.getElementById('chipTitle').style.color = checksumChip() ? 'white' : 'crimson');
     
     return;
 }
