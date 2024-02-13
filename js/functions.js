@@ -64,7 +64,8 @@ function getFinalScore(){
 }
 
 function checksumRaw(){
-    return [100,120,100000,120000].includes(sumRaw());
+    // will include 100000 , 120000 functionality in the future
+    return [100,120].includes(sumRaw());
 }
 
 function checksumChip(){
