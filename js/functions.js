@@ -17,8 +17,8 @@ function calculate(){
               
         return;
     }
-    document.getElementById('rawScoreTitle').style.color = checksumRaw() ? 'white' : 'crimson');
-    document.getElementById('chipTitle').style.color = checksumChip() ? 'white' : 'crimson');
+    document.getElementById('rawScoreTitle').style.color = checksumRaw() ? 'white' : 'crimson';
+    document.getElementById('chipTitle').style.color = checksumChip() ? 'white' : 'crimson';
     
     return;
 }
