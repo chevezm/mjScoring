@@ -1,174 +1,232 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+document.addEventListener("DOMContentLoaded", function(){
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function(element){
+        return new bootstrap.Tooltip(element);
+    });
+});
+
+function calculate(){
     
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
-
-    <title>Scoring Calculator</title>
-  </head>
-  <body>
-
+    if(checksumRaw() && checksumChip()){ //
+        toggleVisibility('finalScore','resetButton','submitButton');
+        setValues('name1','p1','name2','p2','name3','p3','name4','p4');
+        setScore(...getFinalScore()); //
+        $('#rawScoreTitle').css('color', 'white');
+        $('#chipTitle').css('color', 'white');      
+        return;
+    }
+    $('#rawScoreTitle').css('color', checksumRaw() ? 'white' : 'crimson');
+    $('#chipTitle').css('color', checksumChip() ? 'white' : 'crimson');
     
-    <div class="container-fluid">
+    return;
+}
 
-      <div class="row mt-1">
+function reset(){
+    toggleVisibility('finalScore','resetButton','submitButton');
+    resetValues('raw1','raw2','raw3','raw4','chip1','chip2','chip3','chip4');
+    return;
+}
 
-        <div class="col">
-          <label for="rateSelect" data-bs-toggle="tooltip" title="X per 1K points">Rate</label>
-        </div>
+function toggleVisibility(...args){
+    for (let arg of args){
+        document.getElementById(arg).style.visibility = document.getElementById(arg).style.visibility == 'visible' ? 'hidden' : 'visible';
+    }
+    return;
+}
 
-        <div class="col">
-          <label for="chipSelect" data-bs-toggle="tooltip" title="Added Bonus">Chip</label>
-        </div>
+function setValues(...args){
+    for (let i=0; i < arguments.length; i +=2) document.getElementById(arguments[i]).innerHTML = document.getElementById(arguments[i+1]).value;
+    return;
+}
 
-      </div>
+function resetValues(...args){
+  for (let arg of args) document.getElementById(arg).value = document.getElementById(arg).defaultValue;
+  return;
+}
 
-      <div class="row">
+function getRawScores(){
+    return [getNumber('raw1'), getNumber('raw2'), getNumber('raw3'), getNumber('raw4')];
+}
 
-        <div class="col">
-          <select id="rate" class="form-select" aria-label="Rate">
-            <option value="0.3" selected>0.3</option>
-            <option value="0.5">0.5</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-          </select>
-        </div>
+function getFinalScore(){
+    let [raw1, raw2, raw3, raw4] = getRawScores();
+    let start = round(sumRaw() / 4);
+    let [uma1, uma2, uma3, uma4] = getUma();
+    let max = Math.max(...getRawScores());
+    let oka = getOka();
+    let [chip1, chip2, chip3, chip4] = getChip();
+    let rate = getRate();
+    let final1 = raw1 + uma1 - start - (oka > 0 ? 5 : 0) + (raw1 == max ? oka : 0);
+    let final2 = raw2 + uma2 - start - (oka > 0 ? 5 : 0) + (raw2 == max ? oka : 0);
+    let final3 = raw3 + uma3 - start - (oka > 0 ? 5 : 0) + (raw3 == max ? oka : 0);
+    let final4 = raw4 + uma4 - start - (oka > 0 ? 5 : 0) + (raw4 == max ? oka : 0);
+    return [roundP(final1 * rate + chip1),roundP(final2 * rate + chip2), roundP(final3 * rate + chip3), roundP(final4 * rate + chip4)];
+}
 
-        <div class="col">
-          <select id="chip" class="form-select" aria-label="Chip">
-            <option value="0" selected>0</option>
-            <option value="0.5">0.5</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="5">5</option>
-          </select>
-        </div>
+function checksumRaw(){
+    // will include 100000 , 120000 functionality in the future
+    return [100,120].includes(sumRaw());
+}
 
-      </div>
+function checksumChip(){
+    let chip1 = getNumber('chip1');
+    let chip2 = getNumber('chip2');
+    let chip3 = getNumber('chip3');
+    let chip4 = getNumber('chip4');
+    let chips = [chip1 , chip2, chip3, chip4];
+    let total = parseInt(0);
+    for (let chip of chips) total += chip;
+    return (total % 4 === 0) && (total >= 0);
+}
 
-      
+function sumRaw(){
+    let total = 0;
+    for (let raw of getRawScores()) total += raw;
+    return round(total); 
+}
 
-      <div class="row mt-1">
-        <div class="col">
-          <label for="umaSelect" data-bs-toggle="tooltip" title="Ranked Based Bonus">Uma</label>
-      </div>
-      </div>
+function getNumber(idName){
+    return Number(document.getElementById(idName).value); 
+}
 
-      <div class="row">
-        
-        <div class="col">
-          <select id="uma" class="form-select" aria-label="Uma">
-            <option selected>0</option>
-            <option value="10">10 / 5</option>
-            <option value="15">15 / 5</option>
-            <option value="20">20 / 10</option>
-            <option value="30">30 / 10</option>
-          </select>
-        </div>
+function getOka(){
+    let oka = document.getElementById('oka').checked ? 1 : 0;
+    let scores = getRawScores();
+    let maxCount = 0;
+    let max = Math.max(...scores);
+    for (let score of scores) if (max == score) maxCount += 1;
+    return round(oka / maxCount * 20);
+}
 
-        <div class="col">
-          <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="oka">
-            <label class="form-check-label" for="oka" data-bs-toggle="tooltip" title=" 20K Win Bonus">Oka</label>
-          </div>
-        </div>
-      </div>
+function getUma(){
+    let [raw1, raw2, raw3, raw4] = getRawScores();
+    let ranks = getRanks();
+    let uma = setUma();
+    return [uma[ranks[raw1]], uma[ranks[raw2]], uma[ranks[raw3]], uma[ranks[raw4]]];
+}
 
-      <div class="row mt-2">
-        <div class="col">
-          <table class="table table-striped table-sm">
-            <thead class="table-dark">
-              <tr>
-                <th scope="col align-self-start">Player</th>
-                <th scope="col align-self-start" id="rawScoreTitle">Raw Score</th>
-                <th scope="col align-self-start" id="chipTitle">Chip</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row"><input type="text" placeholder="P1" size="6" id="p1"></th>
-                <td><input class="rawScore" type="number" id="raw1" value="-1" step="0.1"></td>
-                <td><input class="numberChip" type="number" value="-1" step="1" id="chip1"></td>
-              </tr>
-              <tr>
-                <th scope="row"><input type="text" placeholder="P2" size="6" id="p2"></th>
-                <td><input class="rawScore" type="number" id="raw2" value="-1" step="0.1"></td>
-                <td><input class="numberChip" type="number" value="-1" step="1" id="chip2"></td>
-              </tr>
-              <tr>
-                <th scope="row"><input type="text" placeholder="P3" size="6" id="p3"></th>
-                <td><input class="rawScore" type="number" id="raw3" value="-1" step="0.1"></td>
-                <td><input class="numberChip" type="number" value="-1" step="1" id="chip3"></td>
-              </tr>
-              <tr>
-                <th scope="row"><input type="text" placeholder="P4" size="6" id="p4"></th>
-                <td><input class="rawScore" type="number" id="raw4" value="-1" step="0.1"></td>
-                <td><input class="numberChip" type="number" value="-1" step="1" id="chip4"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+function setUma(){
+    let uma = new Object();
+    switch(document.getElementById('uma').value){
+        case "10":
+            uma[1] = 10;
+            uma[1.5] = 7.5;
+            uma[2] = 5;
+            uma[2.5] = 0;
+            uma[3] = -5;
+            uma[3.5] = -7.5;
+            uma[4] = -10;
+            break;
+        case "15":
+            uma[1] = 15;
+            uma[1.5] = 10;
+            uma[2] = 5;
+            uma[2.5] = 0;
+            uma[3] = -5;
+            uma[3.5] = -10;
+            uma[4] = -15;
+            break;
+        case "20":
+            uma[1] = 20;
+            uma[1.5] = 15;
+            uma[2] = 10;
+            uma[2.5] = 0;
+            uma[3] = -10;
+            uma[3.5] = -15;
+            uma[4] = -20;
+            break;
+        case "30":
+            uma[1] = 30;
+            uma[1.5] = 20;
+            uma[2] = 10;
+            uma[2.5] = 0;
+            uma[3] = -10;
+            uma[3.5] = -20;
+            uma[4] = -30;
+            break;
+        default:
+            uma[1] = 0;
+            uma[1.5] = 0;
+            uma[2] = 0;
+            uma[2.5] = 0;
+            uma[3] = 0;
+            uma[3.5] = 0;
+            uma[4] = 0;
+    }
+    return uma;
+}
 
-      <div class="row">
-        <div class="col">
-          <button type="button" onclick="calculate()" class="btn btn-dark" id="submitButton" style="visibility: visible;">Submit</button>
-        </div>
-      </div>
+function getRanks(){
+    let scores = getRawScores();
+    let unique = new Set(scores);
+    let sortedUnique = Array.from(unique);
+    sortedUnique = bubbleSort(sortedUnique);
+    let ranks = new Object();
 
-      <div class="row mt-2 justify-content-start">
-        <div class="col">
-          <table class="table table-striped table-sm" id="finalScore">
-            <thead class="table-dark">
-              <tr>
-                <th scope="col align-self-start">Player</th>
-                <th scope="col align-self-start">Final Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row" id="name1"></th>
-                <td id="score1"></td>
-              </tr>
-              <tr>
-                <th scope="row" id="name2"></th>
-                <td id="score2"></td>
-              </tr>
-              <tr>
-                <th scope="row" id="name3"></th>
-                <td id="score3"></td>
-              </tr>
-              <tr>
-                <th scope="row" id="name4"></th>
-                <td id="score4"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+    let r = 1;
+    for (let score of sortedUnique){
+        let counted = count(score, scores);
+        ranks[score] = (2 * r + counted - 1) / 2;
+        r += counted;
+    }
+    return ranks;
+}
 
-      <div class="row mb-2">
-        <div class="col">
-          <button type="button" onclick="reset()" class="btn btn-dark" id="resetButton">Reset</button>
-        </div>
-      </div>
+function getRate(){
+    return getNumber('rate');
+}
 
-      
-    </div>
- 
-   
-    <!-- Optional JavaScript -->
-    <script src="js/functions.js"></script>
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-  </body>
-</html>
+function getChip(){
+    let chipRate = getNumber('chip');
+    let chip1 = getNumber('chip1');
+    let chip2 = getNumber('chip2');
+    let chip3 = getNumber('chip3');
+    let chip4 = getNumber('chip4');
+    let chips = [chip1 , chip2, chip3, chip4];
+
+    let total = parseInt(0);
+    for (let chip of chips) total += chip;
+    total = Math.round(total / 4);
+    
+    chip1 = (chip1 - total) * chipRate;
+    chip2 = (chip2 - total) * chipRate;
+    chip3 = (chip3 - total) * chipRate;
+    chip4 = (chip4 - total) * chipRate;
+    
+    return [chip1, chip2, chip3, chip4];
+}
+
+function bubbleSort(array){
+    for (let i = 0; i < array.length - 1; i++){
+        for (let j = 0; j < array.length - i - 1; j++){
+            if(array[j] < array[j+ 1]){
+                let temp1 = array[j];
+                array[j] = array[j+1];
+                array[j+1] = temp1;
+            }
+        }
+    }
+    return array;
+}
+
+function count(find, array){
+    let total = 0;
+    for (let elem of array) if (elem == find) total += 1;
+    return total;
+}
+
+function round(num){
+    return Math.round(num * 10) / 10;
+}
+
+function roundP(num){
+    return Math.round(num * 100) / 100;
+}
+
+function setScore(...args){
+
+    document.getElementById('score1').innerHTML = args[0];
+    document.getElementById('score2').innerHTML = args[1];
+    document.getElementById('score3').innerHTML = args[2];
+    document.getElementById('score4').innerHTML = args[3];    
+}
