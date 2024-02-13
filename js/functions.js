@@ -7,18 +7,16 @@ document.addEventListener("DOMContentLoaded", function(){
 
 function calculate(){
     
-    if(checksumRaw() && checksumChip()){
+    if(checksumRaw() && checksumChip()){ //
         toggleVisibility('finalScore','resetButton','submitButton');
         setValues('name1','p1','name2','p2','name3','p3','name4','p4');
-        setScore(...getFinalScore());
-        
-        document.getElementById('rawScoreTitle').style.color = 'white';
-        document.getElementById('chipTitle').style.color = 'white';
-              
+        setScore(...getFinalScore()); //
+        $('#rawScoreTitle').css('color', 'white');
+        $('#chipTitle').css('color', 'white');      
         return;
     }
-    document.getElementById('rawScoreTitle').style.color = checksumRaw() ? 'white' : 'crimson';
-    document.getElementById('chipTitle').style.color = checksumChip() ? 'white' : 'crimson';
+    $('#rawScoreTitle').css('color', checksumRaw() ? 'white' : 'crimson');
+    $('#chipTitle').css('color', checksumChip() ? 'white' : 'crimson');
     
     return;
 }
@@ -82,9 +80,9 @@ function checksumChip(){
 }
 
 function sumRaw(){
-    let total = parseInt(0);
+    let total = 0;
     for (let raw of getRawScores()) total += raw;
-    return total; 
+    return round(total); 
 }
 
 function getNumber(idName){
@@ -209,7 +207,6 @@ function bubbleSort(array){
         }
     }
     return array;
-
 }
 
 function count(find, array){
