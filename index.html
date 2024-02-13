@@ -19,26 +19,50 @@
     <div class="container-fluid">
 
       <div class="row mt-1">
-        <div class="col">
-          <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="oka">
-            <label class="form-check-label" for="oka" data-bs-toggle="tooltip" title="Winning Bonus">Oka (20K)</label>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-1">
-        <div class="col">
-            <label for="umaSelect" data-bs-toggle="tooltip" title="Ranked Based Bonus">Uma</label>
-        </div>
 
         <div class="col">
           <label for="rateSelect" data-bs-toggle="tooltip" title="X per 1,000 points">Rate</label>
         </div>
 
+        <div class="col">
+          <label for="chipSelect" data-bs-toggle="tooltip" title="Added Bonus">Chip</label>
+        </div>
+
       </div>
 
       <div class="row">
+
+        <div class="col">
+          <select id="rate" class="form-select" aria-label="Rate">
+            <option value="0.3" selected>0.3</option>
+            <option value="0.5">0.5</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+          </select>
+        </div>
+
+        <div class="col">
+          <select id="chip" class="form-select" aria-label="Chip">
+            <option value="0" selected>0</option>
+            <option value="0.5">0.5</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+
+      </div>
+
+      
+
+      <div class="row mt-1">
+        <div class="col">
+          <label for="umaSelect" data-bs-toggle="tooltip" title="Ranked Based Bonus">Uma</label>
+      </div>
+      </div>
+
+      <div class="row">
+        
         <div class="col">
           <select id="uma" class="form-select" aria-label="Uma">
             <option selected>0</option>
@@ -50,31 +74,10 @@
         </div>
 
         <div class="col">
-          <select id="rate" class="form-select" aria-label="Rate">
-            <option value="0.3" selected>0.3</option>
-            <option value="0.5">0.5</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-          </select>
-        </div>
-
-      </div>
-
-      <div class="row mt-1">
-        <div class="col-sm">
-          <label for="chipSelect" data-bs-toggle="tooltip" title="Added Bonus">Chip</label>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm">
-          <select id="chip" class="form-select" aria-label="Chip">
-            <option value="0" selected>0</option>
-            <option value="0.5">0.5</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="5">5</option>
-          </select>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="oka">
+            <label class="form-check-label" for="oka" data-bs-toggle="tooltip" title="Winning Bonus">Oka (20K)</label>
+          </div>
         </div>
       </div>
 
