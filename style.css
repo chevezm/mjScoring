@@ -6,18 +6,22 @@ label {
     font-weight: bold;
 }
 
-input[type='number'].rawScore{
-    width: 100px;
-} 
-
-input[type='number'].numberChip{
-    width: 50px;
-} 
-
-.form-select {
+#rate, #chip, #uma, #oka{
     width: 100px;
 }
 
-#finalScore, #resetButton {
-    visibility: hidden;
+.player {
+    width: 90px;
+}
+
+.raw {
+    width: 80px;
+}
+
+.chip {
+    width: 50px;
+}
+
+#finalTable, #newGame {
+    display: none;
 }
