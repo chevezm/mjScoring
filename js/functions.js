@@ -1,3 +1,5 @@
+// Optional enable tooltips
+
 document.addEventListener("DOMContentLoaded", function(){
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     var tooltipList = tooltipTriggerList.map(function(element){
@@ -5,228 +7,221 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 });
 
-function calculate(){
-    
-    if(checksumRaw() && checksumChip()){ //
-        toggleVisibility('finalScore','resetButton','submitButton');
-        setValues('name1','p1','name2','p2','name3','p3','name4','p4');
-        setScore(...getFinalScore()); //
-        $('#rawScoreTitle').css('color', 'white');
-        $('#chipTitle').css('color', 'white');      
+
+$( '#submit' ).on( 'click', function(){
+    const oka = $( '#oka' ).val();
+    const rawTotal = total(...getClassVals('.raw'));
+    const rawSumcheck = rawTotal === 100 || (rawTotal === 120 && oka === "0");
+    const chipTotal = total(...getClassVals('.chip'));
+    const chipSumcheck = chipTotal % 4 === 0 && chipTotal >= 0;
+
+    $( '#rawTitle' ).css( 'color', 'white');
+    $( '#chipTitle' ).css( 'color', 'white');
+
+    if(rawSumcheck && chipSumcheck){
+        $( '#finalTable').show();
+        $( '#newGame').show();
+        $( '#submit').hide();
+        $( '#clear').hide();
+
+        // apply names to Final Score Table
+        $( '#name1').html( $( '#p1' ).val());
+        $( '#name2').html( $( '#p2' ).val());
+        $( '#name3').html( $( '#p3' ).val());
+        $( '#name4').html( $( '#p4' ).val());
+
+        let finalScores = getScore(); // need to implement
+
+        setScore(...finalScores); //set Final Scores
         return;
     }
-    $('#rawScoreTitle').css('color', checksumRaw() ? 'white' : 'crimson');
-    $('#chipTitle').css('color', checksumChip() ? 'white' : 'crimson');
+
+    if(!rawSumcheck){
+        $( '#rawTitle' ).css( 'color', 'crimson');
+    }
+
+    if(!chipSumcheck){
+        $( '#chipTitle' ).css( 'color', 'crimson');
+    }
     
-    return;
+
+});
+
+// Clear Raw Scores and Chip
+
+$( '#clear' ).on( 'click', function() {
+    $('.raw').val('');
+    $('.chip').val('');
+
+    $( '#rawTitle' ).css( 'color', 'white');
+    $( '#chipTitle' ).css( 'color', 'white');
+});
+
+// Negate Raw Score or Chip
+
+$( '.delta' ).on( 'click', function() {
+    let negate = $(this).next().val() * -1;
+    $(this).next().val(negate);
+});
+
+// Hide Final Score Table
+
+$( '#newGame' ).on( 'click', function(){
+    $( '#finalTable').hide();
+    $( '#newGame').hide();
+    $( '#submit').show();
+    $( '#clear').show();
+});
+
+// Return an array of a given class
+function getClassVals(className){
+    return $( className ).map((_, elem) => elem.value).get();
 }
 
-function reset(){
-    toggleVisibility('finalScore','resetButton','submitButton');
-    resetValues('raw1','raw2','raw3','raw4','chip1','chip2','chip3','chip4');
-    return;
-}
-
-function toggleVisibility(...args){
-    for (let arg of args){
-        document.getElementById(arg).style.visibility = document.getElementById(arg).style.visibility == 'visible' ? 'hidden' : 'visible';
-    }
-    return;
-}
-
-function setValues(...args){
-    for (let i=0; i < arguments.length; i +=2) document.getElementById(arguments[i]).innerHTML = document.getElementById(arguments[i+1]).value;
-    return;
-}
-
-function resetValues(...args){
-  for (let arg of args) document.getElementById(arg).value = document.getElementById(arg).defaultValue;
-  return;
-}
-
-function getRawScores(){
-    return [getNumber('raw1'), getNumber('raw2'), getNumber('raw3'), getNumber('raw4')];
-}
-
-function getFinalScore(){
-    let [raw1, raw2, raw3, raw4] = getRawScores();
-    let start = round(sumRaw() / 4);
-    let [uma1, uma2, uma3, uma4] = getUma();
-    let max = Math.max(...getRawScores());
-    let oka = getOka();
-    let [chip1, chip2, chip3, chip4] = getChip();
-    let rate = getRate();
-    let final1 = raw1 + uma1 - start - (oka > 0 ? 5 : 0) + (raw1 == max ? oka : 0);
-    let final2 = raw2 + uma2 - start - (oka > 0 ? 5 : 0) + (raw2 == max ? oka : 0);
-    let final3 = raw3 + uma3 - start - (oka > 0 ? 5 : 0) + (raw3 == max ? oka : 0);
-    let final4 = raw4 + uma4 - start - (oka > 0 ? 5 : 0) + (raw4 == max ? oka : 0);
-    return [roundP(final1 * rate + chip1),roundP(final2 * rate + chip2), roundP(final3 * rate + chip3), roundP(final4 * rate + chip4)];
-}
-
-function checksumRaw(){
-    // will include 100000 , 120000 functionality in the future
-    return [100,120].includes(sumRaw());
-}
-
-function checksumChip(){
-    let chip1 = getNumber('chip1');
-    let chip2 = getNumber('chip2');
-    let chip3 = getNumber('chip3');
-    let chip4 = getNumber('chip4');
-    let chips = [chip1 , chip2, chip3, chip4];
-    let total = parseInt(0);
-    for (let chip of chips) total += chip;
-    return (total % 4 === 0) && (total >= 0);
-}
-
-function sumRaw(){
-    let total = 0;
-    for (let raw of getRawScores()) total += raw;
-    return round(total); 
-}
-
-function getNumber(idName){
-    return Number(document.getElementById(idName).value); 
-}
-
-function getOka(){
-    let oka = document.getElementById('oka').checked ? 1 : 0;
-    let scores = getRawScores();
-    let maxCount = 0;
-    let max = Math.max(...scores);
-    for (let score of scores) if (max == score) maxCount += 1;
-    return round(oka / maxCount * 20);
-}
-
-function getUma(){
-    let [raw1, raw2, raw3, raw4] = getRawScores();
-    let ranks = getRanks();
-    let uma = setUma();
-    return [uma[ranks[raw1]], uma[ranks[raw2]], uma[ranks[raw3]], uma[ranks[raw4]]];
-}
-
-function setUma(){
-    let uma = new Object();
-    switch(document.getElementById('uma').value){
-        case "10":
-            uma[1] = 10;
-            uma[1.5] = 7.5;
-            uma[2] = 5;
-            uma[2.5] = 0;
-            uma[3] = -5;
-            uma[3.5] = -7.5;
-            uma[4] = -10;
-            break;
-        case "15":
-            uma[1] = 15;
-            uma[1.5] = 10;
-            uma[2] = 5;
-            uma[2.5] = 0;
-            uma[3] = -5;
-            uma[3.5] = -10;
-            uma[4] = -15;
-            break;
-        case "20":
-            uma[1] = 20;
-            uma[1.5] = 15;
-            uma[2] = 10;
-            uma[2.5] = 0;
-            uma[3] = -10;
-            uma[3.5] = -15;
-            uma[4] = -20;
-            break;
-        case "30":
-            uma[1] = 30;
-            uma[1.5] = 20;
-            uma[2] = 10;
-            uma[2.5] = 0;
-            uma[3] = -10;
-            uma[3.5] = -20;
-            uma[4] = -30;
-            break;
-        default:
-            uma[1] = 0;
-            uma[1.5] = 0;
-            uma[2] = 0;
-            uma[2.5] = 0;
-            uma[3] = 0;
-            uma[3.5] = 0;
-            uma[4] = 0;
-    }
-    return uma;
+// Calculate the total sum of a given array
+function total(...array){
+    let totalSum = 0;
+    for (let i = 0; i < array.length; i++) totalSum += Number(array[i]) * 100;
+    return totalSum / 100;
 }
 
 function getRanks(){
-    let scores = getRawScores();
-    let unique = new Set(scores);
-    let sortedUnique = Array.from(unique);
-    sortedUnique = bubbleSort(sortedUnique);
-    let ranks = new Object();
+    let scores = getClassVals('.raw');
+    let unique = [];
+    let ranks = new Map();
+    for (let i = 0; i < scores.length; i++){
+        var score = Number(scores[i]);
+        scores[i] = score;
+        if (unique.indexOf(score) === -1){
+            unique.push(score);
+            ranks.set(score, 0);
+        }
+    }
+    let sortedUnique = bubbleSort(unique);
+    let scoresRanked = [];
 
     let r = 1;
+
     for (let score of sortedUnique){
         let counted = count(score, scores);
-        ranks[score] = (2 * r + counted - 1) / 2;
+        ranks.set(score, (2 * r + counted - 1) / 2);
         r += counted;
     }
-    return ranks;
+
+    for (let i = 0; i < scores.length; i++){
+        scoresRanked[i] = ranks.get(scores[i]);
+    }
+
+    return scoresRanked;
 }
 
-function getRate(){
-    return getNumber('rate');
+function getUma(...array){
+    let uma = new Map();
+    switch($( '#uma').val() ){
+        case "10":
+            uma.set(1, 10);
+            uma.set(1.5, 7.5);
+            uma.set(2, 5);
+            uma.set(2.5, 0);
+            uma.set(3, -5);
+            uma.set(3.5, -7.5);
+            uma.set(4, -10);
+            break;
+        case "15":
+            uma.set(1, 15);
+            uma.set(1.5, 10);
+            uma.set(2, 5);
+            uma.set(2.5, 0);
+            uma.set(3, -5);
+            uma.set(3.5, -10);
+            uma.set(4, -15);
+            break;
+        case "20":
+            uma.set(1, 20);
+            uma.set(1.5, 15);
+            uma.set(2, 10);
+            uma.set(2.5, 0);
+            uma.set(3, -10);
+            uma.set(3.5, -15);
+            uma.set(4, -20);
+            break;
+        case "30":
+            uma.set(1, 30);
+            uma.set(1.5, 20);
+            uma.set(2, 10);
+            uma.set(2.5, 0);
+            uma.set(3, -10);
+            uma.set(3.5, -20);
+            uma.set(4, -30);
+        default:
+            uma.set(1, 0);
+            uma.set(1.5, 0);
+            uma.set(2, 0);
+            uma.set(2.5, 0);
+            uma.set(3, 0);
+            uma.set(3.5, 0);
+            uma.set(4, 0);
+    }
+
+    let umaScores = [];
+
+    for(let i = 0; i < array.length; i++) umaScores.push(uma.get(array[i]));
+
+    return umaScores;
 }
 
-function getChip(){
-    let chipRate = getNumber('chip');
-    let chip1 = getNumber('chip1');
-    let chip2 = getNumber('chip2');
-    let chip3 = getNumber('chip3');
-    let chip4 = getNumber('chip4');
-    let chips = [chip1 , chip2, chip3, chip4];
+function getScore(){
+    const start = total(...getClassVals('.raw')) / 4;
+    let finalScores = [0, 0, 0, 0];
+    const ranks = getRanks();
+    const uma = getUma(...ranks);
+    const topRank = Math.min(...ranks);
+    var oka = Number( $( '#oka' ).val() ) / count(topRank, ranks);
+    oka = round(oka, 2);
+    const chips = getClassVals('.chip');
+    const chipsStart = total(...chips) / 4;
+    const chipRate = Number($( '#chip' ).val());
+    const rate = Number($( '#rate' ).val());
 
-    let total = parseInt(0);
-    for (let chip of chips) total += chip;
-    total = Math.round(total / 4);
-    
-    chip1 = (chip1 - total) * chipRate;
-    chip2 = (chip2 - total) * chipRate;
-    chip3 = (chip3 - total) * chipRate;
-    chip4 = (chip4 - total) * chipRate;
-    
-    return [chip1, chip2, chip3, chip4];
+    $( '.raw').each(function(index){
+        let ante = oka > 0 ? 5 : 0;
+        let addOka =  (ranks[index] === topRank) && (start === 25) ? oka : 0;
+        let addChips = (Number(chips[index]) - chipsStart) * chipRate;
+        let score = Number($(this).val()) - ante + addOka - start + uma[index];
+        score = round(score * rate, 2);
+        finalScores[index] = (score + addChips).toFixed(2); // add rate calculation
+    });
+    return finalScores;
 }
 
-function bubbleSort(array){
+// Assign Final Scores
+function setScore(...args){
+    $( '.fScore').each(function(index){
+        $ (this).html(args[index]);
+    });
+}
+
+// not suitable for large data sets
+function bubbleSort(array){ //descending sort
     for (let i = 0; i < array.length - 1; i++){
         for (let j = 0; j < array.length - i - 1; j++){
             if(array[j] < array[j+ 1]){
-                let temp1 = array[j];
+                let temp = array[j];
                 array[j] = array[j+1];
-                array[j+1] = temp1;
+                array[j+1] = temp;
             }
         }
     }
     return array;
 }
 
+function round(value, precision = 0){
+    var multiplier = Math.pow(10, precision);
+    return Math.round(value * multiplier) / multiplier;
+}
+
 function count(find, array){
     let total = 0;
     for (let elem of array) if (elem == find) total += 1;
     return total;
-}
-
-function round(num){
-    return Math.round(num * 10) / 10;
-}
-
-function roundP(num){
-    return Math.round(num * 100) / 100;
-}
-
-function setScore(...args){
-
-    document.getElementById('score1').innerHTML = args[0];
-    document.getElementById('score2').innerHTML = args[1];
-    document.getElementById('score3').innerHTML = args[2];
-    document.getElementById('score4').innerHTML = args[3];    
 }
