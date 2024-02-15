@@ -3,37 +3,33 @@
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
-
-    <title>Scoring Calculator</title>
+    
+    <title>MJ Scoring</title>
   </head>
   <body>
 
-    
-    <div class="container-fluid">
+    <div class="container">
 
-      <div class="row mt-1">
-
+      <div class="row mt-2">
         <div class="col">
-          <label for="rateSelect" data-bs-toggle="tooltip" title="X per 1K points">Rate</label>
+          <label for="rate" title="X per 1K points" data-bs-toggle="tooltip" data-bs-placement="right">Rate</label>
         </div>
 
         <div class="col">
-          <label for="chipSelect" data-bs-toggle="tooltip" title="Added Bonus">Chip</label>
+          <label for="chip" title="Added Bonus" data-bs-toggle="tooltip" data-bs-placement="right">Chip</label>
         </div>
-
       </div>
 
       <div class="row">
-
         <div class="col">
-          <select id="rate" class="form-select" aria-label="Rate">
+          <select id="rate" class="form-select" aria-label="rate">
             <option value="0.3" selected>0.3</option>
             <option value="0.5">0.5</option>
             <option value="1">1</option>
@@ -42,7 +38,7 @@
         </div>
 
         <div class="col">
-          <select id="chip" class="form-select" aria-label="Chip">
+          <select id="chip" class="form-select" aria-label="chip">
             <option value="0" selected>0</option>
             <option value="0.5">0.5</option>
             <option value="1">1</option>
@@ -50,22 +46,22 @@
             <option value="5">5</option>
           </select>
         </div>
-
       </div>
 
-      
-
-      <div class="row mt-1">
+      <div class="row mt-2">
         <div class="col">
-          <label for="umaSelect" data-bs-toggle="tooltip" title="Ranked Based Bonus">Uma</label>
-      </div>
+          <label for="uma" title="Ranked Based Bonus" data-bs-toggle="tooltip" data-bs-placement="right">Uma</label>
+        </div>
+
+        <div class="col">
+          <label for="oka" title="Win Bonus" data-bs-toggle="tooltip" data-bs-placement="right">Oka</label>
+        </div>
       </div>
 
       <div class="row">
-        
         <div class="col">
-          <select id="uma" class="form-select" aria-label="Uma">
-            <option selected>0</option>
+          <select id="uma" class="form-select" aria-label="uma">
+            <option value="0" selected>0</option>
             <option value="10">10 / 5</option>
             <option value="15">15 / 5</option>
             <option value="20">20 / 10</option>
@@ -74,43 +70,75 @@
         </div>
 
         <div class="col">
-          <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="oka">
-            <label class="form-check-label" for="oka" data-bs-toggle="tooltip" title=" 20K Win Bonus">Oka</label>
-          </div>
+          <select id="oka" class="form-select" aria-label="oka">
+            <option value="0" selected>0</option>
+            <option value="20">20</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col">
+          <input id="gameDate" type="date" name="gameDate">
         </div>
       </div>
 
       <div class="row mt-2">
-        <div class="col">
-          <table class="table table-striped table-sm">
+        <div class="row">
+          <table class="table table-sm table-striped table-bordered">
             <thead class="table-dark">
               <tr>
-                <th scope="col align-self-start">Player</th>
-                <th scope="col align-self-start" id="rawScoreTitle">Raw Score</th>
-                <th scope="col align-self-start" id="chipTitle">Chip</th>
+                <th>Player</th>
+                <th id="rawTitle">Raw Score</th>
+                <th id="chipTitle">Chip</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th scope="row"><input type="text" placeholder="P1" size="6" id="p1"></th>
-                <td><input class="rawScore" type="number" id="raw1" value="-1" step="0.1"></td>
-                <td><input class="numberChip" type="number" value="-1" step="1" id="chip1"></td>
+                <td><input id="p1" class="player" type="text"></td>
+                <td>
+                  <button id="raw1Button" type="button" class="btn btn-sm btn-dark delta">Δ</button>
+                  <input id="raw1" class="raw" type="number" step="0.1" placeholder="25.0"></td>
+                <td>
+                  <button id="chip1Button" type="button" class="btn btn-sm btn-dark delta">Δ</button>
+                  <input id="chip1" class="chip" type="number" step="1" placeholder="0">
+                </td>
               </tr>
+    
               <tr>
-                <th scope="row"><input type="text" placeholder="P2" size="6" id="p2"></th>
-                <td><input class="rawScore" type="number" id="raw2" value="-1" step="0.1"></td>
-                <td><input class="numberChip" type="number" value="-1" step="1" id="chip2"></td>
+                <td><input id="p2" class="player" type="text"></td>
+                <td>
+                  <button id="raw2Button" type="button" class="btn btn-sm btn-dark delta">Δ</button>
+                  <input id="raw2" class="raw" type="number" step="0.1" placeholder="25.0"></td>
+                </td>
+                <td>
+                  <button id="chip2Button" type="button" class="btn btn-sm btn-dark delta">Δ</button>
+                  <input id="chip2" class="chip" type="number" step="1" placeholder="0">
+                </td>
               </tr>
+    
               <tr>
-                <th scope="row"><input type="text" placeholder="P3" size="6" id="p3"></th>
-                <td><input class="rawScore" type="number" id="raw3" value="-1" step="0.1"></td>
-                <td><input class="numberChip" type="number" value="-1" step="1" id="chip3"></td>
+                <td><input id="p3" class="player" type="text"></td>
+                <td>
+                  <button id="raw3Button" type="button" class="btn btn-sm btn-dark delta">Δ</button>
+                  <input id="raw3" class="raw" type="number" step="0.1" placeholder="25.0"></td>
+                </td>
+                <td>
+                  <button id="chip3Button" type="button" class="btn btn-sm btn-dark delta">Δ</button>
+                  <input id="chip3" class="chip" type="number" step="1" placeholder="0">
+                </td>
               </tr>
+    
               <tr>
-                <th scope="row"><input type="text" placeholder="P4" size="6" id="p4"></th>
-                <td><input class="rawScore" type="number" id="raw4" value="-1" step="0.1"></td>
-                <td><input class="numberChip" type="number" value="-1" step="1" id="chip4"></td>
+                <td><input id="p4" class="player" type="text"></td>
+                <td>
+                  <button id="raw4Button" type="button" class="btn btn-sm btn-dark delta">Δ</button>
+                  <input id="raw4" class="raw" type="number" step="0.1" placeholder="25.0"></td>
+                </td>
+                <td>
+                  <button id="chip4Button" type="button" class="btn btn-sm btn-dark delta">Δ</button>
+                  <input id="chip4" class="chip" type="number" step="1" placeholder="0">
+                </td>
               </tr>
             </tbody>
           </table>
@@ -119,56 +147,77 @@
 
       <div class="row">
         <div class="col">
-          <button type="button" onclick="calculate()" class="btn btn-dark" id="submitButton" style="visibility: visible;">Submit</button>
+          <button id="submit" type="button" class="btn btn-success">Submit</button>
+        </div>
+
+        <div class="col">
+          <button id="clear" type="button" class="btn btn-danger">Clear</button>
         </div>
       </div>
 
-      <div class="row mt-2 justify-content-start">
-        <div class="col">
-          <table class="table table-striped table-sm" id="finalScore">
+      <div id="finalTable" class="row mt-2">
+        <div class="row">
+          <table class="table table-sm table-striped table-bordered">
             <thead class="table-dark">
               <tr>
-                <th scope="col align-self-start">Player</th>
-                <th scope="col align-self-start">Final Score</th>
+                <th>Player</th>
+                <th>Score</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th scope="row" id="name1"></th>
-                <td id="score1"></td>
+                <td id="name1"></td>
+                <td id="score1" class="fScore"></td>
               </tr>
+    
               <tr>
-                <th scope="row" id="name2"></th>
-                <td id="score2"></td>
+                <td id="name2"></td>
+                <td id="score2" class="fScore"></td>
               </tr>
+    
               <tr>
-                <th scope="row" id="name3"></th>
-                <td id="score3"></td>
+                <td id="name3"></td>
+                <td id="score3" class="fScore"></td>
               </tr>
+    
               <tr>
-                <th scope="row" id="name4"></th>
-                <td id="score4"></td>
+                <td id="name4"></td>
+                <td id="score4" class="fScore"></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <div class="row mb-2">
+      <div class="row">
         <div class="col">
-          <button type="button" onclick="reset()" class="btn btn-dark" id="resetButton">Reset</button>
+          <button id="newGame" type="button" class="btn btn-primary">New Game</button>
         </div>
       </div>
 
       
+
     </div>
- 
-   
-    <!-- Optional JavaScript -->
-    <script src="js/functions.js"></script>
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <!-- jQuery -->
+    
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    -->
+    
+    
+
+    <!-- Javascript -->
+    <script src="js/functions.js"></script>
+    
   </body>
 </html>
