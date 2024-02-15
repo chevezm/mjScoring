@@ -153,6 +153,7 @@ function getUma(...array){
             uma.set(3, -10);
             uma.set(3.5, -20);
             uma.set(4, -30);
+            break;
         default:
             uma.set(1, 0);
             uma.set(1.5, 0);
@@ -222,6 +223,6 @@ function round(value, precision = 0){
 
 function count(find, array){
     let total = 0;
-    for (let elem of array) if (elem == find) total += 1;
+    for (let elem of array) if (elem === find) total += 1; // changed to true equality
     return total;
 }
