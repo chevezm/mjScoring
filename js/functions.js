@@ -78,8 +78,10 @@ $( '#newGame' ).on( 'click', function(){
 // Copy Table to Clip Board
 
 $( '#clipboard' ).on( 'click', function(){
-    const table = $( "#tableExport" ).text();
-    navigator.clipboard.writeText( table );
+    const table = $( "#tableExport" );
+    table.select();
+    table.setSelectionRange(0,99999);
+    navigator.clipboard.writeText( table.text() );
    
 });
 
