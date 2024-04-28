@@ -11,16 +11,17 @@ document.addEventListener("DOMContentLoaded", function(){
 $( '#submit' ).on( 'click', function(){
     const oka = $( '#oka' ).val();
     const rawTotal = total(...getClassVals('.raw'));
-    const rawSumcheck = rawTotal === 100 || (rawTotal === 120 && oka === "0");
+    const rawSumcheck = rawTotal === 100 || rawTotal === 0 || (rawTotal === 120 && oka === "0");
     const chipTotal = total(...getClassVals('.chip'));
     const chipSumcheck = chipTotal % 4 === 0 && chipTotal >= 0;
 
     $( '#rawTitle' ).css( 'color', 'white');
     $( '#chipTitle' ).css( 'color', 'white');
 
-    if(rawSumcheck && chipSumcheck){
+    if( rawSumcheck && chipSumcheck ){
         $( '#finalTable').show();
         $( '#newGame').show();
+        $( '#clipboard').show();
         $( '#submit').hide();
         $( '#clear').hide();
 
@@ -69,8 +70,17 @@ $( '.delta' ).on( 'click', function() {
 $( '#newGame' ).on( 'click', function(){
     $( '#finalTable').hide();
     $( '#newGame').hide();
+    $( '#clipboard').hide();
     $( '#submit').show();
     $( '#clear').show();
+});
+
+// Copy Table to Clip Board
+
+$( '#clipboard' ).on( 'click', function(){
+    
+    navigator.clipboard.writeText( "5" );
+   
 });
 
 // Return an array of a given class
