@@ -79,7 +79,8 @@ $( '#newGame' ).on( 'click', function(){
 
 $( '#clipboard' ).on( 'click', function(){
     const table = $( "#tableExport" );
-    navigator.clipboard.write( table.text() );
+    const blob = new Blob([table], { type: "text/html" });
+    navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
    
 });
 
