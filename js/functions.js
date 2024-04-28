@@ -78,7 +78,7 @@ $( '#newGame' ).on( 'click', function(){
 // Copy Table to Clip Board
 
 $( '#clipboard' ).on( 'click', function(){
-    const table = $( "#tableExport" );
+    const table = $( "#tableExport" ).html();
     const blob = new Blob([table], { type: "text/html" });
     navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
    
