@@ -84,7 +84,7 @@ $( '#clipboard' ).on( 'click', function(){
     const s1 = $( "#score1" ).text();
     const s2 = $( "#score2" ).text();
     
-    navigator.clipboard.writeText( `${p1}, ${s1}, '\n', ${p2}, ${s2}` );
+    navigator.clipboard.writeText( `${p1}\t${s1}\n${p2}\t${s2}` );
    
 });
 
