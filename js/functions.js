@@ -78,7 +78,7 @@ $( '#newGame' ).on( 'click', function(){
 // Copy Table to Clip Board
 
 $( '#clipboard' ).on( 'click', function(){
-    const table = $( "#tableExport" ).textContent;
+    const table = $( "#tableExport" ).html();
     navigator.clipboard.writeText( table );
    
 });
