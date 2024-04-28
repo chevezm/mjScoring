@@ -22,6 +22,6 @@ label {
     width: 50px;
 }
 
-#finalTable, #newGame {
+#finalTable, #newGame, #clipboard {
     display: none;
 }
