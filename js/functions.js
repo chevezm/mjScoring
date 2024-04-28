@@ -80,11 +80,15 @@ $( '#newGame' ).on( 'click', function(){
 $( '#clipboard' ).on( 'click', function(){
     const p1 = $( "#name1" ).text();
     const p2 = $( "#name2" ).text();
+    const p3 = $( "#name3" ).text();
+    const p4 = $( "#name4" ).text();
 
     const s1 = $( "#score1" ).text();
     const s2 = $( "#score2" ).text();
+    const s3 = $( "#score3" ).text();
+    const s4 = $( "#score4" ).text();
     
-    navigator.clipboard.writeText( `${p1}\t${s1}\n${p2}\t${s2}` );
+    navigator.clipboard.writeText( `${p1}\t${s1}\n${p2}\t${s2}\n${p3}\t${s3}\n${p4}\t${s4}` );
    
 });
 
