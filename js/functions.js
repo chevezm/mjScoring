@@ -209,8 +209,20 @@ function getScore(){
         let addChips = (Number(chips[index]) - chipsStart) * chipRate;
         let score = Number($(this).val()) - ante + addOka - start + uma[index];
         score = round(score * rate, 2);
-        finalScores[index] = (score + addChips).toFixed(2); // add rate calculation
+        score = Math.round(score + addChips);
+        finalScores[index] = Number(score); // add rate calculation
     });
+
+    const lastPlaceScore = Math.min(...finalScores);
+    const numLastPlacePlayers = count(lastPlaceScore, finalScores);
+    const totalScore = total(...finalScores);
+    for (let i = 0; i < finalScores.length; i++){
+        if(finalScores[i] == lastPlaceScore){
+            finalScores[i] -= (totalScore / numLastPlacePlayers).toFixed(2);
+        }
+              
+    }
+    
     return finalScores;
 }
 
